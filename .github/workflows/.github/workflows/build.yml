@@ -13,10 +13,9 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      # 1. Android SDK muss eingerichtet werden, damit $ANDROID_HOME existiert!
-      - uses: android-actions/setup-android@v3
+      # Hier wurde von v3 auf v2 gewechselt:
+      - uses: android-actions/setup-android@v2
 
-      # 2. Lizenzen automatisch akzeptieren
       - name: Accept Android licenses
         run: yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
 
@@ -24,7 +23,6 @@ jobs:
         with: 
           gradle-version: 8.7
 
-      # Hinweis: Falls du das Gradle-Wrapper nutzt, verwende `./gradlew` statt `gradle`
       - run: ./gradlew assembleDebug --no-daemon
 
       - uses: actions/upload-artifact@v4
