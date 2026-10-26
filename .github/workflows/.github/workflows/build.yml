@@ -12,14 +12,14 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      # Installiert das Android SDK und akzeptiert Lizenzen automatisch
+      # 1. Installiert das Android SDK und akzeptiert alle Lizenzen automatisch
       - uses: android-actions/setup-android@v4
 
       - uses: gradle/actions/setup-gradle@v4
         with: 
           gradle-version: 8.7
 
-      # Korrekter Aufruf des Gradle-Wrappers
+      # 2. WICHTIG: ./gradlew (mit ./ vorne) statt nur gradle
       - run: ./gradlew assembleDebug --no-daemon
 
       - uses: actions/upload-artifact@v4
