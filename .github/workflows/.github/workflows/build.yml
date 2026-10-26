@@ -13,14 +13,10 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      # Nutzt v4 und verhindert das automatische Laden fehlerhafter Pakete
-      - uses: android-actions/setup-android@v4
-        with:
-          packages: ''
-
-      # Lizenzen sauber im Anschluss akzeptieren
+      # Akzeptiert alle SDK-Lizenzen direkt über das vorinstallierte SDK des Runners
       - name: Android SDK Lizenzen akzeptieren
-        run: yes | sdkmanager --licenses || true
+        run: |
+          yes | ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager --licenses || true
 
       - uses: gradle/actions/setup-gradle@v4
         with: 
