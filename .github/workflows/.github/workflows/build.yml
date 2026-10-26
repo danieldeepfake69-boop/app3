@@ -1,5 +1,4 @@
 name: Build APK
-
 on: [push, workflow_dispatch]
 
 jobs:
@@ -13,15 +12,14 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      # Akzeptiert alle SDK-Lizenzen direkt über das vorinstallierte SDK des Runners
-      - name: Android SDK Lizenzen akzeptieren
-        run: |
-          yes | ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager --licenses || true
+      # Installiert das Android SDK und akzeptiert Lizenzen automatisch
+      - uses: android-actions/setup-android@v4
 
       - uses: gradle/actions/setup-gradle@v4
         with: 
           gradle-version: 8.7
 
+      # Korrekter Aufruf des Gradle-Wrappers
       - run: ./gradlew assembleDebug --no-daemon
 
       - uses: actions/upload-artifact@v4
