@@ -1,16 +1,33 @@
 name: Build APK
+
 on: [push, workflow_dispatch]
+
 jobs:
   build:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
+      
       - uses: actions/setup-java@v5
-        with: { distribution: temurin, java-version: 17 }
+        with: 
+          distribution: temurin
+          java-version: 17
+
+      # 1. Android SDK muss eingerichtet werden, damit $ANDROID_HOME existiert!
+      - uses: android-actions/setup-android@v3
+
+      # 2. Lizenzen automatisch akzeptieren
       - name: Accept Android licenses
         run: yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
+
       - uses: gradle/actions/setup-gradle@v4
-        with: { gradle-version: 8.7 }
-      - run: gradle assembleDebug --no-daemon
+        with: 
+          gradle-version: 8.7
+
+      # Hinweis: Falls du das Gradle-Wrapper nutzt, verwende `./gradlew` statt `gradle`
+      - run: ./gradlew assembleDebug --no-daemon
+
       - uses: actions/upload-artifact@v4
-        with: { name: TriDash-APK, path: app/build/outputs/apk/debug/app-debug.apk }
+        with: 
+          name: TriDash-APK
+          path: app/build/outputs/apk/debug/app-debug.apk
