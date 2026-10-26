@@ -4,7 +4,7 @@ on: [push, workflow_dispatch]
 
 jobs:
   build:
-    runs-on: ubuntu-22.04 # stabiler für Android-Builds als 24.04
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
       
@@ -13,10 +13,8 @@ jobs:
           distribution: temurin
           java-version: 17
 
+      # v4 übernimmt das Setup und die Lizenzannahme komplett automatisch
       - uses: android-actions/setup-android@v4
-
-      - name: Accept Android licenses
-        run: yes | sdkmanager --licenses || true
 
       - uses: gradle/actions/setup-gradle@v4
         with: 
